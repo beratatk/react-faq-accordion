@@ -1,0 +1,59 @@
+{
+  "name": "react-faq-accordion",
+  "version": "0.1.0",
+  "description": "Animated React FAQ accordion built on <details> — the answer text stays in the server-rendered HTML, so search engines and AI crawlers can read it without running JavaScript.",
+  "keywords": [
+    "react",
+    "accordion",
+    "faq",
+    "details",
+    "summary",
+    "seo",
+    "ssr",
+    "prerender",
+    "schema.org",
+    "faqpage",
+    "accessibility"
+  ],
+  "license": "MIT",
+  "author": "Atekian (https://atekian.com)",
+  "homepage": "https://atekian.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atekiandev/react-faq-accordion.git"
+  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "files": [
+    "dist",
+    "styles.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.10",
+    "typescript": "~5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
