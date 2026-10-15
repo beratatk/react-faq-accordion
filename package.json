@@ -16,11 +16,14 @@
     "accessibility"
   ],
   "license": "MIT",
-  "author": "Atekian (https://atekian.com)",
-  "homepage": "https://atekian.com",
+  "author": "Berat Atak (https://github.com/beratatk)",
+  "homepage": "https://github.com/beratatk/react-faq-accordion#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atekiandev/react-faq-accordion.git"
+    "url": "git+https://github.com/beratatk/react-faq-accordion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beratatk/react-faq-accordion/issues"
   },
   "type": "module",
   "sideEffects": [

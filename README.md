@@ -18,9 +18,6 @@ removed **after** the height animation finishes, not before.
 - **Yours to style.** Ship your own classes through `classNames`, or import the optional stylesheet.
 - **~2 kB** minified, tree-shakeable, TypeScript types included.
 
-Used in production at [atekian.com](https://atekian.com) — see the
-[FAQ page](https://atekian.com/sss) and view source: every answer is in the HTML.
-
 ## Install
 
 ```bash
@@ -131,6 +128,14 @@ Nothing to configure. The component renders the full markup on the server; the o
 work is toggling. With `defaultOpen`, the matching items carry the `open` attribute in the HTML
 that leaves your server.
 
+You can check this without a browser:
+
+```tsx
+import { renderToString } from "react-dom/server";
+
+renderToString(<FaqAccordion items={items} />); // every answer is in this string
+```
+
 ## License
 
-MIT © [Atekian](https://atekian.com)
+MIT © [Berat Atak](https://github.com/beratatk)
