@@ -9,25 +9,21 @@
  * `classNames` prop'u tüm parçaları hedefler.
  */
 
+/*
+ * Renkler sayfanın kendi metin renginden (currentColor) türetilir. İşletim
+ * sisteminin temasına (prefers-color-scheme) bakılmaz: sayfa zemini ona
+ * uymayabilir ve koyu modda beyaz zemin üzerinde açık renk metin okunmaz.
+ */
 .rfa-root {
-  --rfa-border: rgba(0, 0, 0, 0.12);
-  --rfa-text: #18181b;
-  --rfa-muted: #52525b;
-  --rfa-icon: #71717a;
+  --rfa-border: color-mix(in srgb, currentColor 12%, transparent);
+  --rfa-text: currentColor;
+  --rfa-muted: color-mix(in srgb, currentColor 70%, transparent);
+  --rfa-icon: color-mix(in srgb, currentColor 60%, transparent);
   --rfa-gap: 1.5rem;
   --rfa-duration: 420ms;
   --rfa-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
   border-top: 1px solid var(--rfa-border);
-}
-
-@media (prefers-color-scheme: dark) {
-  .rfa-root {
-    --rfa-border: rgba(255, 255, 255, 0.12);
-    --rfa-text: #fafafa;
-    --rfa-muted: #a1a1aa;
-    --rfa-icon: #d4d4d8;
-  }
 }
 
 .rfa-item {
@@ -76,8 +72,9 @@
   transition: transform var(--rfa-duration) var(--rfa-easing);
 }
 
+/* Artı 45° dönerek çarpıya dönüşür. */
 .rfa-icon[data-state="open"] {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }
 
 .rfa-icon-bar {
@@ -94,14 +91,6 @@
 .rfa-icon-bar-v {
   width: 1px;
   height: 0.875rem;
-  transition:
-    transform var(--rfa-duration) var(--rfa-easing),
-    opacity var(--rfa-duration) var(--rfa-easing);
-}
-
-.rfa-icon[data-state="open"] .rfa-icon-bar-v {
-  transform: scaleY(0);
-  opacity: 0;
 }
 
 /*
@@ -120,8 +109,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rfa-icon,
-  .rfa-icon-bar-v {
+  .rfa-icon {
     transition: none;
   }
 }
