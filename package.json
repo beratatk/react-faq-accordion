@@ -1,6 +1,6 @@
 {
   "name": "react-faq-accordion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Animated React FAQ accordion built on <details> — the answer text stays in the server-rendered HTML, so search engines and AI crawlers can read it without running JavaScript.",
   "keywords": [
     "react",
