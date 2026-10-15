@@ -18,6 +18,10 @@ export interface FaqPageJsonLdOptions {
   inLanguage?: string;
 }
 
+/**
+ * Builds the FAQPage object. To embed it in a <script> tag, use
+ * faqPageJsonLdString: plain JSON.stringify leaves "<" unescaped.
+ */
 export function faqPageJsonLd(
   items: FaqPlainItem[],
   options: FaqPageJsonLdOptions = {}
@@ -38,10 +42,16 @@ export function faqPageJsonLd(
   };
 }
 
-/** Ready-made string to put inside <script type="application/ld+json">. */
+/**
+ * Ready-made string to put inside <script type="application/ld+json">.
+ *
+ * Every "<" is written as <, so FAQ text such as "</script>" or "<!--"
+ * can't end the script element or open a comment in the page. The result is
+ * still valid JSON and parses to the same data.
+ */
 export function faqPageJsonLdString(
   items: FaqPlainItem[],
   options?: FaqPageJsonLdOptions
 ): string {
-  return JSON.stringify(faqPageJsonLd(items, options));
+  return JSON.stringify(faqPageJsonLd(items, options)).replace(/</g, "\\u003c");
 }

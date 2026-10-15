@@ -112,6 +112,10 @@ import { faqPageJsonLdString } from "react-faq-accordion";
 />;
 ```
 
+`faqPageJsonLdString` writes every `<` as `<`, so FAQ text such as `</script>` can't close the
+script tag early. That matters when the text comes from a CMS or other people. If you serialize
+`faqPageJsonLd(items)` yourself, escape `<` the same way.
+
 > Only pass questions that are visible on the page. A hidden "SEO-only" list is a policy
 > violation, not an optimization.
 
