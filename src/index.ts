@@ -1,8 +1,8 @@
-export { FaqAccordion } from "./FaqAccordion";
+export { FaqAccordion } from "./FaqAccordion.js";
 export type {
   FaqAccordionProps,
   FaqAccordionItem,
   FaqAccordionClassNames,
-} from "./FaqAccordion";
-export { faqPageJsonLd, faqPageJsonLdString } from "./schema";
-export type { FaqPlainItem, FaqPageJsonLdOptions } from "./schema";
+} from "./FaqAccordion.js";
+export { faqPageJsonLd, faqPageJsonLdString } from "./schema.js";
+export type { FaqPlainItem, FaqPageJsonLdOptions } from "./schema.js";
