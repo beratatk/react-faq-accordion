@@ -7,14 +7,14 @@ import {
 } from "react";
 
 /**
- * Bir soru-cevap kalemi.
- * `question` ve `answer` ReactNode olduğu için zengin içerik geçilebilir;
- * JSON-LD üreticisi (`faqPageJsonLd`) düz metin bekler.
+ * A single question-and-answer item.
+ * `question` and `answer` are ReactNodes, so rich content is allowed;
+ * the JSON-LD helper (`faqPageJsonLd`) expects plain text.
  */
 export interface FaqAccordionItem {
   question: ReactNode;
   answer: ReactNode;
-  /** Kararlı React anahtarı. Verilmezse index kullanılır. */
+  /** Stable React key. Falls back to the index when omitted. */
   id?: string;
 }
 
@@ -30,19 +30,19 @@ export interface FaqAccordionClassNames {
 
 export interface FaqAccordionProps {
   items: FaqAccordionItem[];
-  /** Birden çok kalem aynı anda açık kalabilsin mi. Varsayılan: false (akordiyon). */
+  /** Whether several items can be open at once. Default: false (accordion). */
   allowMultiple?: boolean;
-  /** İlk render'da açık gelecek index'ler. Sunucuda üretilen HTML'e de yansır. */
+  /** Indexes open on first render. Also reflected in the server-rendered HTML. */
   defaultOpen?: number | number[];
-  /** Açılma/kapanma süresi (ms). 0 verilirse animasyon kapanır. */
+  /** Open/close duration in ms. 0 disables the animation. */
   duration?: number;
-  /** CSS easing değeri. */
+  /** CSS easing value. */
   easing?: string;
   classNames?: FaqAccordionClassNames;
-  /** Varsayılan artı/çarpı ikonunu değiştirir. */
+  /** Replaces the default plus/cross icon. */
   renderIcon?: (state: { open: boolean; index: number }) => ReactNode;
   onToggle?: (index: number, open: boolean) => void;
-  /** Animasyonu koşulsuz kapatır. Verilmezse prefers-reduced-motion dinlenir. */
+  /** Turns the animation off unconditionally. When omitted, prefers-reduced-motion is respected. */
   reduceMotion?: boolean;
 }
 
@@ -56,15 +56,16 @@ const toSet = (value: number | number[] | undefined): Set<number> => {
 };
 
 /**
- * <details> tabanlı, animasyonlu SSS akordiyonu.
+ * Animated FAQ accordion built on <details>.
  *
- * Neden <details>: cevap metni sunucuda üretilen HTML'in gövdesinde yer alır ve
- * JavaScript çalışmadığında da açılabilir. JS çalıştırmayan tarayıcılar (arama
- * motoru ve yapay zeka crawler'ları) SSS içeriğini olduğu gibi görür.
+ * Why <details>: the answer text sits in the body of the server-rendered HTML
+ * and can be expanded even when JavaScript doesn't run. Clients that don't run
+ * JS (search engine and AI crawlers) see the FAQ content as is.
  *
- * Kapanma animasyonu için `open` özniteliği hemen kaldırılmaz: önce yükseklik
- * sıfıra iner, animasyon bitince öznitelik kaldırılır. Aksi halde tarayıcı
- * içeriği anında gizlediği için kapanış görünmez.
+ * To animate the close, the `open` attribute isn't removed right away: the
+ * height first shrinks to zero, and the attribute is removed when the animation
+ * ends. Otherwise the browser hides the content instantly and the close is never
+ * seen.
  */
 export function FaqAccordion({
   items,
@@ -78,7 +79,7 @@ export function FaqAccordion({
   reduceMotion,
 }: FaqAccordionProps) {
   const [open, setOpen] = useState<Set<number>>(() => toSet(defaultOpen));
-  // Sunucu ve ilk istemci render'ının aynı kalması için dondurulur.
+  // Frozen so the server render and the first client render stay identical.
   const initiallyOpen = useRef(toSet(defaultOpen)).current;
 
   const toggle = useCallback(
@@ -151,7 +152,7 @@ function FaqAccordionRow({
     const panel = panelRef.current;
     if (!details || !panel) return;
 
-    // İlk render: DOM zaten doğru durumda, animasyon çalıştırma.
+    // First render: the DOM is already in the right state, so don't animate.
     if (firstRun.current) {
       firstRun.current = false;
       details.open = open;
@@ -206,9 +207,9 @@ function FaqAccordionRow({
   return (
     <details
       ref={detailsRef}
-      // `open` React tarafından yönetilmez; kapanış animasyonu için
-      // öznitelik imperatif olarak ayarlanır. Buradaki değer yalnızca
-      // sunucu çıktısını ve ilk render'ı belirler.
+      // React doesn't manage `open`; the attribute is set imperatively so
+      // the close can animate. The value here only decides the server
+      // output and the first render.
       open={initiallyOpen || undefined}
       data-state={state}
       className={cx("rfa-item", classNames?.item)}
@@ -216,13 +217,13 @@ function FaqAccordionRow({
       <summary
         data-state={state}
         className={cx("rfa-trigger", classNames?.trigger)}
-        // Çalışması için zorunlu olan iki kural gömülü veriliyor; böylece
-        // isteğe bağlı stylesheet alınmasa da bileşen doğru davranır.
-        // (Safari'nin ::-webkit-details-marker kuralı styles.css içinde.)
+        // The two rules the component needs to work are inlined, so it
+        // behaves correctly even without the optional stylesheet.
+        // (Safari's ::-webkit-details-marker rule lives in styles.css.)
         style={{ listStyle: "none", cursor: "pointer" }}
         onClick={(event) => {
-          // JavaScript yoksa bu satır hiç çalışmaz ve tarayıcının kendi
-          // <details> davranışı devreye girer.
+          // Without JavaScript this line never runs, and the browser's own
+          // <details> behaviour takes over.
           event.preventDefault();
           onToggle(index);
         }}

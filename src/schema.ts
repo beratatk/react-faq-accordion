@@ -1,10 +1,10 @@
 /**
- * FAQPage JSON-LD üreticisi.
+ * FAQPage JSON-LD helper.
  *
- * Kural: schema'ya giren her soru ve cevap sayfada **görünür** olmalı.
- * Bu yüzden üreticiye akordiyonda gösterdiğiniz listenin aynısını verin;
- * gizli bir "SEO listesi" oluşturmayın — Google'ın yapılandırılmış veri
- * politikası bunu ihlal sayar.
+ * Rule: every question and answer in the schema must be **visible** on the page.
+ * So pass the helper the same list you show in the accordion; don't build a
+ * hidden "SEO list" — Google's structured data policy counts that as a
+ * violation.
  */
 export interface FaqPlainItem {
   question: string;
@@ -12,9 +12,9 @@ export interface FaqPlainItem {
 }
 
 export interface FaqPageJsonLdOptions {
-  /** Sayfanın mutlak adresi — @id üretmek için. */
+  /** Absolute URL of the page, used to build the @id. */
   url?: string;
-  /** "tr-TR", "en-US" gibi. */
+  /** For example "en-US" or "tr-TR". */
   inLanguage?: string;
 }
 
@@ -38,7 +38,7 @@ export function faqPageJsonLd(
   };
 }
 
-/** <script type="application/ld+json"> içine konacak hazır dize. */
+/** Ready-made string to put inside <script type="application/ld+json">. */
 export function faqPageJsonLdString(
   items: FaqPlainItem[],
   options?: FaqPageJsonLdOptions

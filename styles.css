@@ -1,18 +1,18 @@
 /*
- * react-faq-accordion — varsayılan stiller (isteğe bağlı).
+ * react-faq-accordion — default styles (optional).
  *
  * import "react-faq-accordion/styles.css";
  *
- * Her değer bir CSS değişkenine bağlı; kendi temanıza uydurmak için
- * yalnızca değişkenleri geçersiz kılmanız yeterli. Tamamen kendi
- * sınıflarınızı kullanacaksanız bu dosyayı hiç almayabilirsiniz —
- * `classNames` prop'u tüm parçaları hedefler.
+ * Colours, the gap and the timing are CSS variables; to match your own
+ * theme, overriding the variables is enough. If you use your own classes
+ * throughout, you can skip this file entirely — the `classNames` prop
+ * targets every part.
  */
 
 /*
- * Renkler sayfanın kendi metin renginden (currentColor) türetilir. İşletim
- * sisteminin temasına (prefers-color-scheme) bakılmaz: sayfa zemini ona
- * uymayabilir ve koyu modda beyaz zemin üzerinde açık renk metin okunmaz.
+ * Colours derive from the page's own text colour (currentColor). The OS
+ * theme (prefers-color-scheme) is ignored: the page background may not
+ * follow it, and in dark mode light text on a white background is unreadable.
  */
 .rfa-root {
   --rfa-border: color-mix(in srgb, currentColor 12%, transparent);
@@ -43,7 +43,7 @@
   user-select: none;
 }
 
-/* Tarayıcıların yerleşik üçgen işaretini kaldır */
+/* Hide the browsers' built-in triangle marker */
 .rfa-trigger::-webkit-details-marker {
   display: none;
 }
@@ -72,7 +72,7 @@
   transition: transform var(--rfa-duration) var(--rfa-easing);
 }
 
-/* Artı 45° dönerek çarpıya dönüşür. */
+/* The plus rotates 45° into a cross. */
 .rfa-icon[data-state="open"] {
   transform: rotate(45deg);
 }
@@ -94,9 +94,9 @@
 }
 
 /*
- * Panelin yüksekliği açılış/kapanışta Web Animations API ile sürülür;
- * burada yalnızca taşmanın gizlenmesi gerekir. Animasyon bittiğinde
- * yükseklik tekrar içeriğe göre belirlenir.
+ * The panel's height is driven by the Web Animations API while it opens and
+ * closes; all this rule has to do is hide the overflow. When the animation
+ * ends, the height follows the content again.
  */
 .rfa-panel {
   overflow: hidden;
