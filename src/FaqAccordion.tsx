@@ -81,17 +81,21 @@ export function FaqAccordion({
   const [open, setOpen] = useState<Set<number>>(() => toSet(defaultOpen));
   // Frozen so the server render and the first client render stay identical.
   const initiallyOpen = useRef(toSet(defaultOpen)).current;
+  // Latest open set, including clicks React hasn't rendered yet. toggle reads
+  // it instead of using a setOpen updater: React may run updaters twice
+  // (StrictMode) or during render, and onToggle must fire once per click.
+  const latestOpen = useRef(open);
 
   const toggle = useCallback(
     (index: number) => {
-      setOpen((current) => {
-        const isOpen = current.has(index);
-        const next = allowMultiple ? new Set(current) : new Set<number>();
-        if (isOpen) next.delete(index);
-        else next.add(index);
-        onToggle?.(index, !isOpen);
-        return next;
-      });
+      const current = latestOpen.current;
+      const isOpen = current.has(index);
+      const next = allowMultiple ? new Set(current) : new Set<number>();
+      if (isOpen) next.delete(index);
+      else next.add(index);
+      latestOpen.current = next;
+      setOpen(next);
+      onToggle?.(index, !isOpen);
     },
     [allowMultiple, onToggle]
   );
